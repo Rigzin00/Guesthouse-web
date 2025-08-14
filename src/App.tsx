@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useAnimation } from 'framer-motion';
 import { BedDouble, MapPin, Phone, Mail, Utensils, Wifi, Car, Mountain } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
-import { supabase } from './lib/supabase';
-import { AuthModal } from './components/AuthModal';
-import { BookingModal } from './components/BookingModal';
+
 import Room, { Room as RoomType } from './components/Room';
 import About from './components/About';
 import Contact from './components/Contact';
@@ -13,71 +11,12 @@ import Hero from './components/Hero';
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
   const [rooms, setRooms] = useState<RoomType[]>([]);
-  const [user, setUser] = useState(null);
   const controls = useAnimation();
   const { scrollY } = useScroll();
 
-  useEffect(() => {
-    // Fetch rooms
-    const fetchRooms = async () => {
-      const { data, error } = await supabase
-        .from('rooms')
-        .select('*');
-      
-      if (error) {
-        console.error('Error fetching rooms:', error);
-        // Fallback to sample data for demo purposes
-        setRooms(sampleRooms);
-        return;
-      }
-
-      setRooms(data);
-    };
-
-    fetchRooms();
-
-    // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'rooms', 'location'];
-      sections.forEach(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= window.innerHeight / 3 && rect.bottom >= window.innerHeight / 3) {
-            setActiveSection(section);
-          }
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleBooking = (room: RoomType) => {
-    if (!user) {
-      setIsAuthModalOpen(true);
-      return;
-    }
-    setSelectedRoom(room);
-  };
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-  };
-
-  // Sample room data for demo purposes
+  // Sample room data (since Supabase is removed)
   const sampleRooms: RoomType[] = [
     {
       id: '1',
@@ -147,29 +86,42 @@ function App() {
     }
   ];
 
+  useEffect(() => {
+    // Directly set sample rooms (no Supabase)
+    setRooms(sampleRooms);
+
+    const handleScroll = () => {
+      const sections = ['home', 'rooms', 'location'];
+      sections.forEach(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= window.innerHeight / 3 && rect.bottom >= window.innerHeight / 3) {
+            setActiveSection(section);
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleBooking = (room: RoomType) => {
+    // Just select room — no login check
+    setSelectedRoom(room);
+    alert(`Booking for: ${room.title}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Toaster position="top-center" />
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
-      />
-      {selectedRoom && (
-        <BookingModal
-          isOpen={true}
-          onClose={() => setSelectedRoom(null)}
-          room={selectedRoom}
-        />
-      )}
 
       {/* Hero Section */}
       <Hero 
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         activeSection={activeSection}
-        user={user}
-        setIsAuthModalOpen={setIsAuthModalOpen}
-        handleSignOut={handleSignOut}
       />
       
       <About />
@@ -261,31 +213,19 @@ function App() {
             >
               <h3 className="text-xl font-semibold mb-4">Find Us Here</h3>
               <div className="space-y-4">
-                <motion.p 
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-3"
-                >
+                <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
                   <MapPin className="text-yellow-500 flex-shrink-0" />
                   <span>Skayil Gokma, Sumoor Nubra, Leh Ladakh, 194401, India</span>
                 </motion.p>
-                <motion.p 
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-3"
-                >
+                <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
                   <Phone className="text-yellow-500 flex-shrink-0" />
                   <span>+91 1234567890</span>
                 </motion.p>
-                <motion.p 
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-3"
-                >
+                <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
                   <Mail className="text-yellow-500 flex-shrink-0" />
                   <span>info@bangsagokma.com</span>
                 </motion.p>
-                <motion.p 
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-3"
-                >
+                <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
                   <Car className="text-yellow-500 flex-shrink-0" />
                   <span>5 minutes from Sumur sand dunes</span>
                 </motion.p>
@@ -317,20 +257,11 @@ function App() {
         className="bg-gray-900 text-white py-12 px-4 md:px-8"
       >
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h3 className="text-xl font-bold mb-4">Bangsa Gokma</h3>
             <p className="text-gray-400">Your home away from home in the beautiful Nubra Valley</p>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <div className="space-y-2">
               {['about', 'rooms', 'location', 'contact'].map((item) => (
@@ -345,12 +276,7 @@ function App() {
               ))}
             </div>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>
             <h3 className="text-xl font-bold mb-4">Contact Us</h3>
             <div className="space-y-2 text-gray-400">
               <motion.p whileHover={{ x: 10 }}>Phone: +91 1234567890</motion.p>
