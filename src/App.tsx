@@ -467,6 +467,7 @@ import { supabase } from './lib/supabase';
 import { AuthModal } from './components/AuthModal';
 import { BookingModal } from './components/BookingModal';
 import Room, { Room as RoomType } from './components/Room';
+import About from './components/About';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -737,7 +738,7 @@ function App() {
           </motion.a>
         </motion.div>
       </header>
-
+      <About />
       {/* Features */}
       <motion.section 
         initial={{ opacity: 0, y: 50 }}
@@ -798,6 +799,7 @@ function App() {
           </div>
         </div>
       </motion.section>
+      
 
       {/* Location */}
       <motion.section 
