@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useAnimation, AnimatePresence } from 'framer-motion';
-import { BedDouble, MapPin, Phone, Mail, Utensils, Wifi, Car, Mountain, Users, Bath, Tv, Coffee } from 'lucide-react';
+import { motion, useScroll, useAnimation } from 'framer-motion';
+import { BedDouble, MapPin, Phone, Mail, Utensils, Wifi, Car, Mountain } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import { supabase } from './lib/supabase';
 import { AuthModal } from './components/AuthModal';
@@ -9,6 +8,7 @@ import { BookingModal } from './components/BookingModal';
 import Room, { Room as RoomType } from './components/Room';
 import About from './components/About';
 import Contact from './components/Contact';
+import Hero from './components/Hero';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -163,123 +163,17 @@ function App() {
       )}
 
       {/* Hero Section */}
-      <header id="home" className="relative h-screen">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0"
-        >
-          <img 
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80"
-            alt="Bangsa Gokma Guest House"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/50" />
-        </motion.div>
-        
-        <motion.nav 
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ type: "spring", stiffness: 100 }}
-          className="relative z-20 flex items-center justify-between px-4 md:px-8 py-6"
-        >
-          <motion.h1 
-            whileHover={{ scale: 1.1 }}
-            className="text-2xl md:text-3xl font-bold text-white cursor-pointer"
-          >
-            Bangsa Gokma
-          </motion.h1>
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <button
-                onClick={handleSignOut}
-                className="text-white hover:text-yellow-400 transition-colors"
-              >
-                Sign Out
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="text-white hover:text-yellow-400 transition-colors"
-              >
-                Sign In
-              </button>
-            )}
-            <button 
-              className="md:hidden text-white"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              <motion.svg 
-                animate={{ rotate: isMenuOpen ? 180 : 0 }}
-                className="w-6 h-6" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-              </motion.svg>
-            </button>
-          </div>
-          <AnimatePresence>
-            {(isMenuOpen || window.innerWidth >= 768) && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ type: "spring", stiffness: 100 }}
-                className={`md:flex fixed md:relative top-20 md:top-0 left-0 md:left-auto w-full md:w-auto flex-col md:flex-row items-center bg-black/90 md:bg-transparent md:space-x-8 text-white py-4 md:py-0 space-y-4 md:space-y-0 z-50`}
-              >
-                {['about', 'rooms', 'location', 'contact'].map((item) => (
-                  <motion.a
-                    key={item}
-                    href={`#${item}`}
-                    onClick={() => setIsMenuOpen(false)}
-                    whileHover={{ scale: 1.1, color: "#FCD34D" }}
-                    className={`transition-colors ${activeSection === item ? 'text-yellow-400' : 'text-white'}`}
-                  >
-                    {item.charAt(0).toUpperCase() + item.slice(1)}
-                  </motion.a>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.nav>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 mt-[-4rem]"
-        >
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-6"
-          >
-            Welcome to Bangsa Gokma
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
-            className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-2xl mb-8 px-4"
-          >
-            Experience the beauty of Nubra Valley at our peaceful guest house, located near the stunning Sumur sand dunes
-          </motion.p>
-          <motion.a 
-            href="#rooms"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-yellow-500 text-black px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors text-sm sm:text-base"
-          >
-            View Rooms
-          </motion.a>
-        </motion.div>
-      </header>
+      <Hero 
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        activeSection={activeSection}
+        user={user}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+        handleSignOut={handleSignOut}
+      />
+      
       <About />
+      
       {/* Features */}
       <motion.section 
         initial={{ opacity: 0, y: 50 }}
@@ -341,7 +235,6 @@ function App() {
         </div>
       </motion.section>
       
-
       {/* Location */}
       <motion.section 
         id="location"
@@ -413,6 +306,7 @@ function App() {
           </div>
         </div>
       </motion.section>
+      
       <Contact />
 
       {/* Footer */}

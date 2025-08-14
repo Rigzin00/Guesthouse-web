@@ -357,8 +357,7 @@ const Contact: React.FC = () => {
               className="relative bg-white rounded-2xl shadow-xl overflow-hidden group"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600" />
-
-<div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Ccircle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;28&quot; stroke=&quot;white&quot; stroke-width=&quot;4&quot; fill=&quot;none&quot; /%3E%3C/svg%3E')]" />
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Ccircle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;28&quot; stroke=&quot;white&quot; stroke-width=&quot;4&quot; fill=&quot;none&quot; /%3E%3C/svg%3E')]" />
 
               
               <div className="relative z-10 aspect-video flex items-center justify-center text-white p-8">
