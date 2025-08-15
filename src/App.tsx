@@ -1,5 +1,6 @@
+
 // import React, { useState, useEffect } from 'react';
-// import { motion, useScroll, useAnimation } from 'framer-motion';
+// import { motion, useScroll, useAnimation, useSpring } from 'framer-motion';
 // import { BedDouble, MapPin, Phone, Mail, Utensils, Wifi, Car, Mountain } from 'lucide-react';
 // import { Toaster } from 'react-hot-toast';
 
@@ -7,6 +8,7 @@
 // import About from './components/About';
 // import Contact from './components/Contact';
 // import Hero from './components/Hero';
+// import Location from './components/Location';
 
 // function App() {
 //   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +17,64 @@
 //   const [rooms, setRooms] = useState<RoomType[]>([]);
 //   const controls = useAnimation();
 //   const { scrollY } = useScroll();
+//   const springScrollY = useSpring(scrollY, { damping: 50, stiffness: 400 });
+
+//   // Enhanced container variants with stagger effects
+//   const containerVariants = {
+//     hidden: { opacity: 0 },
+//     visible: {
+//       opacity: 1,
+//       transition: {
+//         duration: 0.6,
+//         staggerChildren: 0.15,
+//         delayChildren: 0.2
+//       }
+//     }
+//   };
+
+//   const itemVariants = {
+//     hidden: { 
+//       opacity: 0, 
+//       y: 50,
+//       scale: 0.95 
+//     },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       scale: 1,
+//       transition: {
+//         duration: 0.6,
+//         ease: [0.25, 0.46, 0.45, 0.94]
+//       }
+//     }
+//   };
+
+//   const featureCardVariants = {
+//     hidden: { 
+//       opacity: 0, 
+//       y: 30,
+//       rotateX: -15 
+//     },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       rotateX: 0,
+//       transition: {
+//         duration: 0.7,
+//         ease: "easeOut"
+//       }
+//     },
+//     hover: {
+//       scale: 1.05,
+//       y: -10,
+//       rotateX: 5,
+//       boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+//       transition: {
+//         duration: 0.3,
+//         ease: "easeInOut"
+//       }
+//     }
+//   };
 
 //   // Sample room data (since Supabase is removed)
 //   const sampleRooms: RoomType[] = [
@@ -108,13 +168,43 @@
 //   }, []);
 
 //   const handleBooking = (room: RoomType) => {
-//     // Just select room — no login check
+//     // Enhanced booking animation
 //     setSelectedRoom(room);
-//     alert(`Booking for: ${room.title}`);
+    
+//     // Show enhanced toast or modal
+//     const bookingMessage = `Booking initiated for ${room.title} - ₹${room.price}/night`;
+//     alert(bookingMessage);
 //   };
 
 //   return (
-//     <div className="min-h-screen bg-gray-50">
+//     <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+//       {/* Animated Background Elements */}
+//       <motion.div
+//         animate={{
+//           rotate: [0, 360],
+//           scale: [1, 1.2, 1],
+//         }}
+//         transition={{
+//           duration: 30,
+//           repeat: Infinity,
+//           ease: "linear"
+//         }}
+//         className="fixed top-1/4 right-1/4 w-64 h-64 bg-gradient-to-r from-yellow-200 to-orange-200 opacity-10 rounded-full blur-3xl pointer-events-none z-0"
+//       />
+      
+//       <motion.div
+//         animate={{
+//           rotate: [360, 0],
+//           scale: [1, 1.3, 1],
+//         }}
+//         transition={{
+//           duration: 25,
+//           repeat: Infinity,
+//           ease: "linear"
+//         }}
+//         className="fixed bottom-1/4 left-1/4 w-48 h-48 bg-gradient-to-r from-blue-200 to-purple-200 opacity-10 rounded-full blur-3xl pointer-events-none z-0"
+//       />
+
 //       <Toaster position="top-center" />
 
 //       {/* Hero Section */}
@@ -126,56 +216,137 @@
       
 //       <About />
       
-//       {/* Features */}
+//       {/* Enhanced Features Section */}
 //       <motion.section 
-//         initial={{ opacity: 0, y: 50 }}
-//         whileInView={{ opacity: 1, y: 0 }}
-//         viewport={{ once: true }}
-//         transition={{ duration: 0.5 }}
-//         className="py-12 sm:py-16 px-4 md:px-8"
+//         variants={containerVariants}
+//         initial="hidden"
+//         whileInView="visible"
+//         viewport={{ once: true, margin: "-100px" }}
+//         className="py-16 px-4 md:px-8 relative z-10"
 //       >
-//         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-//           <FeatureCard icon={<BedDouble />} title="Comfortable Rooms" description="Clean, spacious rooms with modern amenities" />
-//           <FeatureCard icon={<Wifi />} title="Free Wi-Fi" description="Stay connected with high-speed internet" />
-//           <FeatureCard icon={<Utensils />} title="Local Cuisine" description="Authentic Ladakhi dining experience" />
-//           <FeatureCard icon={<Mountain />} title="Valley Views" description="Breathtaking views of Nubra Valley" />
+//         {/* Floating background elements */}
+//         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+//           {[...Array(6)].map((_, i) => (
+//             <motion.div
+//               key={i}
+//               animate={{
+//                 y: [0, -20, 0],
+//                 rotate: [0, 10, 0],
+//               }}
+//               transition={{
+//                 duration: 4 + i,
+//                 repeat: Infinity,
+//                 ease: "easeInOut",
+//                 delay: i * 0.5
+//               }}
+//               className={`absolute w-2 h-2 bg-yellow-400 rounded-full opacity-30`}
+//               style={{
+//                 left: `${20 + i * 15}%`,
+//                 top: `${30 + (i % 3) * 20}%`,
+//               }}
+//             />
+//           ))}
+//         </div>
+
+//         <div className="max-w-6xl mx-auto relative z-10">
+//           {/* Enhanced Section Header */}
+//           <motion.div 
+//             variants={itemVariants}
+//             className="text-center mb-16"
+//           >
+//             <motion.h2 
+//               className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-800 via-gray-700 to-yellow-600 bg-clip-text text-transparent mb-4"
+//               whileHover={{ 
+//                 scale: 1.02,
+//                 textShadow: "0 0 20px rgba(251, 191, 36, 0.3)"
+//               }}
+//               transition={{ duration: 0.3 }}
+//             >
+//               Why Choose Bangsa Gokma
+//             </motion.h2>
+//             <motion.p 
+//               className="text-gray-600 max-w-2xl mx-auto text-lg"
+//               initial={{ opacity: 0, y: 20 }}
+//               whileInView={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.3, duration: 0.6 }}
+//             >
+//               Experience the perfect blend of comfort, adventure, and authentic Ladakhi hospitality
+//             </motion.p>
+//           </motion.div>
+
+//           <motion.div 
+//             variants={containerVariants}
+//             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+//           >
+//             <FeatureCard 
+//               icon={<BedDouble />} 
+//               title="Comfortable Rooms" 
+//               description="Clean, spacious rooms with modern amenities and traditional touches"
+//               delay={0}
+//             />
+//             <FeatureCard 
+//               icon={<Wifi />} 
+//               title="Free Wi-Fi" 
+//               description="Stay connected with high-speed internet throughout the property"
+//               delay={0.1}
+//             />
+//             <FeatureCard 
+//               icon={<Utensils />} 
+//               title="Local Cuisine" 
+//               description="Authentic Ladakhi dining experience with fresh, local ingredients"
+//               delay={0.2}
+//             />
+//             <FeatureCard 
+//               icon={<Mountain />} 
+//               title="Valley Views" 
+//               description="Breathtaking panoramic views of the majestic Nubra Valley"
+//               delay={0.3}
+//             />
+//           </motion.div>
 //         </div>
 //       </motion.section>
 
-//       {/* Rooms Section */}
+//       {/* Enhanced Rooms Section */}
 //       <motion.section 
 //         id="rooms"
-//         initial={{ opacity: 0 }}
-//         whileInView={{ opacity: 1 }}
-//         viewport={{ once: true }}
-//         className="py-12 sm:py-16 px-4 md:px-8 bg-white"
+//         variants={containerVariants}
+//         initial="hidden"
+//         whileInView="visible"
+//         viewport={{ once: true, margin: "-50px" }}
+//         className="py-16 px-4 md:px-8 bg-white relative z-10"
 //       >
 //         <div className="max-w-6xl mx-auto">
-//           <motion.h2 
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//             className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4"
+//           <motion.div variants={itemVariants} className="text-center mb-16">
+//             <motion.h2 
+//               className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4"
+//               whileHover={{ scale: 1.02 }}
+//               transition={{ duration: 0.2 }}
+//             >
+//               Our Rooms & Suites
+//             </motion.h2>
+//             <motion.p 
+//               className="text-gray-600 max-w-2xl mx-auto text-lg"
+//               initial={{ opacity: 0, y: 20 }}
+//               whileInView={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.3, duration: 0.6 }}
+//             >
+//               Choose from our selection of comfortable and well-appointed rooms, each designed to make your stay memorable
+//             </motion.p>
+//           </motion.div>
+          
+//           <motion.div 
+//             variants={containerVariants}
+//             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
 //           >
-//             Our Rooms
-//           </motion.h2>
-//           <motion.p 
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//             transition={{ delay: 0.2 }}
-//             className="text-gray-600 text-center mb-12 max-w-2xl mx-auto px-4"
-//           >
-//             Choose from our selection of comfortable and well-appointed rooms, each designed to make your stay memorable
-//           </motion.p>
-//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
 //             {rooms.map((room, index) => (
 //               <motion.div
 //                 key={room.id}
-//                 initial={{ opacity: 0, y: 30 }}
-//                 whileInView={{ opacity: 1, y: 0 }}
-//                 viewport={{ once: true }}
-//                 transition={{ delay: index * 0.1 }}
+//                 variants={itemVariants}
+//                 whileHover={{ 
+//                   y: -10,
+//                   transition: { duration: 0.3, ease: "easeOut" }
+//                 }}
+//                 className="group"
 //               >
 //                 <Room
 //                   room={room}
@@ -183,132 +354,321 @@
 //                 />
 //               </motion.div>
 //             ))}
-//           </div>
+//           </motion.div>
 //         </div>
 //       </motion.section>
       
-//       {/* Location */}
-//       <motion.section 
-//         id="location"
-//         initial={{ opacity: 0 }}
-//         whileInView={{ opacity: 1 }}
-//         viewport={{ once: true }}
-//         className="bg-gray-50 py-12 sm:py-16 px-4 md:px-8"
-//       >
-//         <div className="max-w-6xl mx-auto">
-//           <motion.h2 
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//             className="text-2xl sm:text-3xl font-bold text-center mb-12"
-//           >
-//             Our Location
-//           </motion.h2>
-//           <div className="grid md:grid-cols-2 gap-8 items-center">
-//             <motion.div
-//               initial={{ opacity: 0, x: -50 }}
-//               whileInView={{ opacity: 1, x: 0 }}
-//               viewport={{ once: true }}
-//               className="order-2 md:order-1"
-//             >
-//               <h3 className="text-xl font-semibold mb-4">Find Us Here</h3>
-//               <div className="space-y-4">
-//                 <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
-//                   <MapPin className="text-yellow-500 flex-shrink-0" />
-//                   <span>Skayil Gokma, Sumoor Nubra, Leh Ladakh, 194401, India</span>
-//                 </motion.p>
-//                 <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
-//                   <Phone className="text-yellow-500 flex-shrink-0" />
-//                   <span>+91 1234567890</span>
-//                 </motion.p>
-//                 <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
-//                   <Mail className="text-yellow-500 flex-shrink-0" />
-//                   <span>info@bangsagokma.com</span>
-//                 </motion.p>
-//                 <motion.p whileHover={{ x: 10 }} className="flex items-center gap-3">
-//                   <Car className="text-yellow-500 flex-shrink-0" />
-//                   <span>5 minutes from Sumur sand dunes</span>
-//                 </motion.p>
-//               </div>
-//             </motion.div>
-//             <motion.div
-//               initial={{ opacity: 0, x: 50 }}
-//               whileInView={{ opacity: 1, x: 0 }}
-//               viewport={{ once: true }}
-//               className="aspect-video rounded-lg overflow-hidden shadow-lg order-1 md:order-2"
-//             >
-//               <img 
-//                 src="https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&q=80"
-//                 alt="Nubra Valley"
-//                 className="w-full h-full object-cover"
-//               />
-//             </motion.div>
-//           </div>
-//         </div>
-//       </motion.section>
+//       {/* Use the new Location component */}
+//       <Location />
       
 //       <Contact />
 
-//       {/* Footer */}
+//       {/* Enhanced Footer */}
 //       <motion.footer 
-//         initial={{ opacity: 0 }}
-//         whileInView={{ opacity: 1 }}
+//         variants={containerVariants}
+//         initial="hidden"
+//         whileInView="visible"
 //         viewport={{ once: true }}
-//         className="bg-gray-900 text-white py-12 px-4 md:px-8"
+//         className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16 px-4 md:px-8 relative overflow-hidden"
 //       >
-//         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-//           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-//             <h3 className="text-xl font-bold mb-4">Bangsa Gokma</h3>
-//             <p className="text-gray-400">Your home away from home in the beautiful Nubra Valley</p>
-//           </motion.div>
-//           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
-//             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-//             <div className="space-y-2">
-//               {['about', 'rooms', 'location', 'contact'].map((item) => (
-//                 <motion.a
-//                   key={item}
-//                   href={`#${item}`}
-//                   whileHover={{ x: 10, color: "#FCD34D" }}
-//                   className="block text-gray-400 hover:text-white"
+//         {/* Animated background pattern */}
+//         <div className="absolute inset-0 opacity-10">
+//           {[...Array(20)].map((_, i) => (
+//             <motion.div
+//               key={i}
+//               animate={{
+//                 scale: [1, 1.2, 1],
+//                 opacity: [0.1, 0.3, 0.1],
+//               }}
+//               transition={{
+//                 duration: 3 + (i % 4),
+//                 repeat: Infinity,
+//                 delay: i * 0.2,
+//                 ease: "easeInOut"
+//               }}
+//               className="absolute w-1 h-1 bg-white rounded-full"
+//               style={{
+//                 left: `${Math.random() * 100}%`,
+//                 top: `${Math.random() * 100}%`,
+//               }}
+//             />
+//           ))}
+//         </div>
+
+//         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 relative z-10">
+//           <motion.div variants={itemVariants}>
+//             <motion.h3 
+//               className="text-2xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent"
+//               whileHover={{ scale: 1.05 }}
+//               transition={{ duration: 0.2 }}
+//             >
+//               Bangsa Gokma
+//             </motion.h3>
+//             <motion.p 
+//               className="text-gray-300 leading-relaxed"
+//               whileHover={{ color: "#F3F4F6" }}
+//               transition={{ duration: 0.2 }}
+//             >
+//               Your gateway to the enchanting Nubra Valley. Experience authentic Ladakhi hospitality amidst breathtaking landscapes.
+//             </motion.p>
+            
+//             {/* Social media icons with enhanced animations */}
+//             <motion.div 
+//               className="flex gap-4 mt-6"
+//               variants={containerVariants}
+//             >
+//               {['facebook', 'instagram', 'twitter'].map((social, index) => (
+//                 <motion.div
+//                   key={social}
+//                   variants={itemVariants}
+//                   whileHover={{ 
+//                     scale: 1.2, 
+//                     rotate: 5,
+//                     backgroundColor: "#F59E0B"
+//                   }}
+//                   whileTap={{ scale: 0.9 }}
+//                   className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300"
 //                 >
-//                   {item.charAt(0).toUpperCase() + item.slice(1)}
+//                   <span className="text-sm font-bold">{social[0].toUpperCase()}</span>
+//                 </motion.div>
+//               ))}
+//             </motion.div>
+//           </motion.div>
+          
+//           <motion.div variants={itemVariants}>
+//             <motion.h3 
+//               className="text-xl font-bold mb-6"
+//               whileHover={{ x: 5, color: "#F59E0B" }}
+//               transition={{ duration: 0.2 }}
+//             >
+//               Quick Links
+//             </motion.h3>
+//             <div className="space-y-3">
+//               {[
+//                 { name: 'About Us', href: '#about' },
+//                 { name: 'Our Rooms', href: '#rooms' },
+//                 { name: 'Location', href: '#location' },
+//                 { name: 'Contact', href: '#contact' },
+//                 { name: 'Gallery', href: '#gallery' },
+//                 { name: 'Reviews', href: '#reviews' }
+//               ].map((item, index) => (
+//                 <motion.a
+//                   key={item.name}
+//                   href={item.href}
+//                   variants={itemVariants}
+//                   whileHover={{ 
+//                     x: 10, 
+//                     color: "#FCD34D",
+//                     textShadow: "0 0 8px rgba(252, 211, 77, 0.5)"
+//                   }}
+//                   className="block text-gray-300 hover:text-yellow-400 transition-all duration-300 cursor-pointer"
+//                 >
+//                   {item.name}
 //                 </motion.a>
 //               ))}
 //             </div>
 //           </motion.div>
-//           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>
-//             <h3 className="text-xl font-bold mb-4">Contact Us</h3>
-//             <div className="space-y-2 text-gray-400">
-//               <motion.p whileHover={{ x: 10 }}>Phone: +91 1234567890</motion.p>
-//               <motion.p whileHover={{ x: 10 }}>Email: info@bangsagokma.com</motion.p>
-//               <motion.p whileHover={{ x: 10 }}>Sumoor Nubra, Leh Ladakh</motion.p>
+          
+//           <motion.div variants={itemVariants}>
+//             <motion.h3 
+//               className="text-xl font-bold mb-6"
+//               whileHover={{ x: 5, color: "#F59E0B" }}
+//               transition={{ duration: 0.2 }}
+//             >
+//               Contact Information
+//             </motion.h3>
+//             <div className="space-y-4">
+//               {[
+//                 { icon: Phone, text: "+91 1234567890", type: "tel" },
+//                 { icon: Mail, text: "info@bangsagokma.com", type: "email" },
+//                 { icon: MapPin, text: "Sumoor Nubra, Leh Ladakh", type: "address" }
+//               ].map((item, index) => {
+//                 const Icon = item.icon;
+//                 return (
+//                   <motion.div
+//                     key={index}
+//                     variants={itemVariants}
+//                     whileHover={{ 
+//                       x: 10,
+//                       color: "#F59E0B"
+//                     }}
+//                     className="flex items-center gap-3 text-gray-300 cursor-pointer transition-all duration-300"
+//                   >
+//                     <motion.div
+//                       whileHover={{ 
+//                         rotate: 5,
+//                         scale: 1.1
+//                       }}
+//                       transition={{ duration: 0.2 }}
+//                     >
+//                       <Icon size={18} />
+//                     </motion.div>
+//                     <span>{item.text}</span>
+//                   </motion.div>
+//                 );
+//               })}
 //             </div>
+
+//             {/* Newsletter subscription */}
+//             <motion.div
+//               variants={itemVariants}
+//               className="mt-6"
+//             >
+//               <h4 className="font-semibold mb-3 text-gray-200">Stay Updated</h4>
+//               <div className="flex gap-2">
+//                 <motion.input
+//                   whileFocus={{ scale: 1.02 }}
+//                   type="email"
+//                   placeholder="Your email"
+//                   className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 transition-colors duration-300"
+//                 />
+//                 <motion.button
+//                   whileHover={{ 
+//                     scale: 1.05,
+//                     backgroundColor: "#D97706"
+//                   }}
+//                   whileTap={{ scale: 0.95 }}
+//                   className="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 rounded-lg font-medium transition-colors duration-300"
+//                 >
+//                   Subscribe
+//                 </motion.button>
+//               </div>
+//             </motion.div>
 //           </motion.div>
 //         </div>
+
+//         {/* Footer bottom */}
+//         <motion.div
+//           variants={itemVariants}
+//           className="border-t border-gray-700 mt-12 pt-8 text-center relative z-10"
+//         >
+//           <motion.p 
+//             className="text-gray-400"
+//             whileHover={{ color: "#D1D5DB" }}
+//             transition={{ duration: 0.2 }}
+//           >
+//             © 2024 Bangsa Gokma Guest House. All rights reserved. Made with ❤️ in Nubra Valley.
+//           </motion.p>
+//         </motion.div>
 //       </motion.footer>
 //     </div>
 //   );
 // }
 
-// function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+// function FeatureCard({ 
+//   icon, 
+//   title, 
+//   description, 
+//   delay = 0 
+// }: { 
+//   icon: React.ReactNode; 
+//   title: string; 
+//   description: string;
+//   delay?: number;
+// }) {
+//   const cardVariants = {
+//     hidden: { 
+//       opacity: 0, 
+//       y: 50,
+//       scale: 0.9,
+//       rotateX: -15
+//     },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       scale: 1,
+//       rotateX: 0,
+//       transition: {
+//         duration: 0.7,
+//         delay: delay,
+//         ease: [0.25, 0.46, 0.45, 0.94]
+//       }
+//     },
+//     hover: {
+//       scale: 1.05,
+//       y: -15,
+//       rotateX: 5,
+//       boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+//       transition: {
+//         duration: 0.3,
+//         ease: "easeInOut"
+//       }
+//     }
+//   };
+
+//   const iconVariants = {
+//     hidden: { scale: 0, rotate: -180 },
+//     visible: {
+//       scale: 1,
+//       rotate: 0,
+//       transition: {
+//         type: "spring",
+//         stiffness: 200,
+//         damping: 10,
+//         delay: delay + 0.3
+//       }
+//     },
+//     hover: {
+//       scale: 1.1,
+//       rotate: 5,
+//       color: "#F59E0B",
+//       transition: { duration: 0.2 }
+//     }
+//   };
+
 //   return (
 //     <motion.div
-//       initial={{ opacity: 0, y: 20 }}
-//       whileInView={{ opacity: 1, y: 0 }}
+//       variants={cardVariants}
+//       initial="hidden"
+//       whileInView="visible"
+//       whileHover="hover"
 //       viewport={{ once: true }}
-//       whileHover={{ scale: 1.05 }}
-//       className="bg-white p-6 rounded-lg shadow-lg text-center"
+//       className="bg-white p-8 rounded-xl shadow-lg text-center group cursor-pointer relative overflow-hidden"
 //     >
-//       <motion.div 
+//       {/* Background gradient on hover */}
+//       <motion.div
+//         className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
 //         initial={{ scale: 0 }}
-//         animate={{ scale: 1 }}
-//         transition={{ type: "spring", stiffness: 200 }}
-//         className="w-12 h-12 mx-auto mb-4 text-yellow-500"
+//         whileHover={{ scale: 1 }}
+//         transition={{ duration: 0.3 }}
+//       />
+      
+//       <motion.div 
+//         variants={iconVariants}
+//         className="w-16 h-16 mx-auto mb-6 text-yellow-500 relative z-10"
 //       >
 //         {icon}
 //       </motion.div>
-//       <h3 className="text-xl font-semibold mb-2">{title}</h3>
-//       <p className="text-gray-600">{description}</p>
+      
+//       <motion.h3 
+//         className="text-xl font-semibold mb-4 relative z-10"
+//         whileHover={{ color: "#F59E0B" }}
+//         transition={{ duration: 0.2 }}
+//       >
+//         {title}
+//       </motion.h3>
+      
+//       <motion.p 
+//         className="text-gray-600 leading-relaxed relative z-10"
+//         initial={{ opacity: 0.8 }}
+//         whileHover={{ opacity: 1, color: "#374151" }}
+//         transition={{ duration: 0.2 }}
+//       >
+//         {description}
+//       </motion.p>
+
+//       {/* Decorative elements */}
+//       <motion.div
+//         className="absolute top-4 right-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100"
+//         animate={{
+//           scale: [1, 1.2, 1],
+//         }}
+//         transition={{
+//           duration: 2,
+//           repeat: Infinity,
+//           ease: "easeInOut"
+//         }}
+//       />
 //     </motion.div>
 //   );
 // }
@@ -324,12 +684,22 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Hero from './components/Hero';
 import Location from './components/Location';
+import SignInModal from './components/SignInModal';
+
+// User interface
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
   const [rooms, setRooms] = useState<RoomType[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const controls = useAnimation();
   const { scrollY } = useScroll();
   const springScrollY = useSpring(scrollY, { damping: 50, stiffness: 400 });
@@ -360,33 +730,6 @@ function App() {
       transition: {
         duration: 0.6,
         ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
-  };
-
-  const featureCardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 30,
-      rotateX: -15 
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut"
-      }
-    },
-    hover: {
-      scale: 1.05,
-      y: -10,
-      rotateX: 5,
-      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut"
       }
     }
   };
@@ -461,12 +804,55 @@ function App() {
     }
   ];
 
+  // Authentication functions
+  const handleSignIn = async (email: string, password: string, rememberMe: boolean): Promise<void> => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Demo authentication logic
+    if (email === 'guest@bangsagokma.com' && password === 'password123') {
+      const user: User = {
+        id: '1',
+        name: 'Guest User',
+        email: email
+      };
+      
+      setUser(user);
+      
+      // Store in localStorage if remember me is checked
+      if (rememberMe) {
+        localStorage.setItem('bangsagokma_user', JSON.stringify(user));
+      }
+    } else {
+      throw new Error('Invalid credentials');
+    }
+  };
+
+  const handleSignOut = () => {
+    setUser(null);
+    localStorage.removeItem('bangsagokma_user');
+    setIsMenuOpen(false);
+    // Scroll to top/home
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setActiveSection('home');
+  };
+
   useEffect(() => {
-    // Directly set sample rooms (no Supabase)
+    // Check for stored user on app load
+    const storedUser = localStorage.getItem('bangsagokma_user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        localStorage.removeItem('bangsagokma_user');
+      }
+    }
+
+    // Set sample rooms
     setRooms(sampleRooms);
 
     const handleScroll = () => {
-      const sections = ['home', 'rooms', 'location'];
+      const sections = ['home', 'about', 'rooms', 'location', 'contact'];
       sections.forEach(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -483,11 +869,13 @@ function App() {
   }, []);
 
   const handleBooking = (room: RoomType) => {
-    // Enhanced booking animation
-    setSelectedRoom(room);
+    if (!user) {
+      setIsAuthModalOpen(true);
+      return;
+    }
     
-    // Show enhanced toast or modal
-    const bookingMessage = `Booking initiated for ${room.title} - ₹${room.price}/night`;
+    setSelectedRoom(room);
+    const bookingMessage = `Hello ${user.name}! Booking initiated for ${room.title} - ₹${room.price}/night`;
     alert(bookingMessage);
   };
 
@@ -522,11 +910,21 @@ function App() {
 
       <Toaster position="top-center" />
 
+      {/* Authentication Modal */}
+      <SignInModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSignIn={handleSignIn}
+      />
+
       {/* Hero Section */}
       <Hero 
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         activeSection={activeSection}
+        user={user}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+        handleSignOut={handleSignOut}
       />
       
       <About />
