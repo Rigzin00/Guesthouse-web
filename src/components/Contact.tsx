@@ -346,8 +346,7 @@ const Contact: React.FC = () => {
                 ))}
               </motion.div>
             </div>
-
-            {/* Enhanced Map Section */}
+{/* Interactive Map Section */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -356,48 +355,82 @@ const Contact: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="relative bg-white rounded-2xl shadow-xl overflow-hidden group"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600" />
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Ccircle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;28&quot; stroke=&quot;white&quot; stroke-width=&quot;4&quot; fill=&quot;none&quot; /%3E%3C/svg%3E')]" />
-
-              
-              <div className="relative z-10 aspect-video flex items-center justify-center text-white p-8">
-                <div className="text-center">
-                  <motion.div
-                    animate={{ 
-                      scale: [1, 1.1, 1],
-                      rotate: [0, 5, -5, 0]
-                    }}
-                    transition={{ 
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    <MapPin className="w-16 h-16 mx-auto mb-4 drop-shadow-lg" />
-                  </motion.div>
-                  <h4 className="text-xl font-bold mb-2">Discover Our Location</h4>
-                  <p className="text-blue-100 mb-4">Perfectly positioned in Nubra Valley</p>
-                  <motion.button
+              {/* Map Container */}
+              <div className="relative aspect-video">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d779.0689748311!2d77.6245507!3d34.621886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38fdea8c8c8c8c8d%3A0x1234567890abcdef!2s34%C2%B037'18.8%22N%2077%C2%B037'31.7%22E!5e0!3m2!1sen!2sin!4v1693847820000!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, borderRadius: '1rem' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="filter brightness-95 hover:brightness-100 transition-all duration-300"
+                />
+                
+                {/* Overlay with location info */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none">
+                  <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
+                    <div className="flex items-center gap-3">
+                      <motion.div
+                        animate={{ 
+                          scale: [1, 1.1, 1],
+                          rotate: [0, 5, -5, 0]
+                        }}
+                        transition={{ 
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                        className="bg-gradient-to-r from-red-500 to-red-600 p-2 rounded-lg text-white"
+                      >
+                        <MapPin className="w-5 h-5" />
+                      </motion.div>
+                      <div>
+                        <h4 className="font-bold text-sm text-gray-900">Bangsa Gokma Resort</h4>
+                        <p className="text-xs text-gray-600">Nubra Valley, Ladakh</p>
+                        <p className="text-xs text-gray-500">34°37'18.8"N 77°37'31.7"E</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Directions Button */}
+                  <motion.a
+                    href="https://www.google.com/maps/place/34%C2%B037'18.8%22N+77%C2%B037'31.7%22E/@34.621886,77.6245507,310m/data=!3m2!1e3!4b1!4m4!3m3!8m2!3d34.621886!4d77.625474?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors shadow-lg"
+                    className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-full font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg text-sm flex items-center gap-2"
                   >
-                    View on Maps
-                  </motion.button>
+                    <MapPin className="w-4 h-4" />
+                    Get Directions
+                  </motion.a>
                 </div>
+                
+                {/* Animated corner elements */}
+                <motion.div
+                  animate={{ y: [-10, 10, -10] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute top-2 left-2 w-2 h-2 bg-blue-500 rounded-full opacity-60"
+                />
+                <motion.div
+                  animate={{ y: [10, -10, 10] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-2 right-12 w-1.5 h-1.5 bg-yellow-500 rounded-full opacity-40"
+                />
               </div>
               
-              {/* Floating Elements */}
-              <motion.div
-                animate={{ y: [-10, 10, -10] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-4 right-4 w-3 h-3 bg-white rounded-full opacity-60"
-              />
-              <motion.div
-                animate={{ y: [10, -10, 10] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-6 left-6 w-2 h-2 bg-white rounded-full opacity-40"
-              />
+              {/* Location Details Footer */}
+              <div className="p-4 bg-gradient-to-r from-gray-50 to-blue-50 border-t">
+                <div className="flex justify-between items-center text-xs text-gray-600">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    Exact GPS Location
+                  </span>
+                  <span>📍 Click map to explore</span>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
 
