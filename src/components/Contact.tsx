@@ -260,7 +260,7 @@ const Contact: React.FC = () => {
             viewport={{ once: true }}
             className="flex flex-wrap justify-center gap-6 mt-8"
           >
-            {trustIndicators.map((indicator, index) => (
+            {trustIndicators.map((indicator) => (
               <motion.div
                 key={indicator.text}
                 variants={itemVariants}

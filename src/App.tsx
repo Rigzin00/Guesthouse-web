@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useAnimation, useSpring } from 'framer-motion';
-import { BedDouble, MapPin, Phone, Mail, Utensils, Wifi, Car, Mountain } from 'lucide-react';
+import { BedDouble, MapPin, Phone, Mail, Utensils, Wifi, Mountain } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 
 import Room, { Room as RoomType } from './components/Room';
@@ -375,7 +375,7 @@ function App() {
             variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {rooms.map((room, index) => (
+            {rooms.map((room) => (
               <motion.div
                 key={room.id}
                 variants={itemVariants}
@@ -454,7 +454,7 @@ function App() {
               className="flex gap-4 mt-6"
               variants={containerVariants}
             >
-              {['facebook', 'instagram', 'twitter'].map((social, index) => (
+              {['facebook', 'instagram', 'twitter'].map((social) => (
                 <motion.div
                   key={social}
                   variants={itemVariants}
@@ -488,7 +488,7 @@ function App() {
                 { name: 'Contact', href: '#contact' },
                 { name: 'Gallery', href: '#gallery' },
                 { name: 'Reviews', href: '#reviews' }
-              ].map((item, index) => (
+              ].map((item) => (
                 <motion.a
                   key={item.name}
                   href={item.href}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { MapPin, Phone, Mail, Car, Clock, Mountain, Navigation, Compass, Camera, TreePine, Building } from 'lucide-react';
+import { motion} from 'framer-motion';
+import { MapPin, Phone, Mail, Car, Clock, Mountain, Navigation, Camera, TreePine, Building } from 'lucide-react';
 
 const Location: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('location');
